@@ -14,8 +14,8 @@ library(ggplot2)
 library(gridExtra)
 
 ## dirs
-data.dir <- file.path('..', 'data', 'nhs')
-results.dir <- file.path('..', 'results')
+data.dir <- file.path('data', 'nhs')
+results.dir <- file.path('results')
 
 ## functions
 `%.%` <- paste0
