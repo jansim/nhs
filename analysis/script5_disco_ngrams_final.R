@@ -73,10 +73,12 @@ names(disco.rhythm) <- gsub('-rhythms\\.txt', '', names(disco.rhythm))
 
 
 ## construct dtm with raw pitch-grams
-disco.pitch.dtm <- dfm(disco.pitch,
-                       what = 'word',
-                       ngrams = 2:3
-                       )
+disco.pitch.dtm <- disco.pitch %>% tokens(what = "word") %>% tokens_ngrams(2:3) %>% dfm()
+# disco.pitch.dtm <- dfm(disco.pitch,
+#                        what = 'word',
+#                        ngrams = 2:3
+#                        )
+
 ## drop pitch-grams that span a rest
 disco.pitch.dtm <- disco.pitch.dtm[,!grepl('\\.', colnames(disco.pitch.dtm))]
 ## identify 2/3-grams by counting number of token separators
@@ -90,10 +92,12 @@ pitch.ngrams.length <- nchar(gsub('[0-9]', '', colnames(disco.pitch.dtm))) + 1
 
 
 ## construct dtm with raw rhythm-grams
-disco.rhythm.dtm <- dfm(disco.rhythm,
-                       what = 'fastestword',
-                       ngrams = 2:3
-                       )
+disco.rhythm.dtm <- disco.rhythm %>% tokens(what = "fastestword") %>% tokens_ngrams(2:3) %>% dfm()
+# disco.rhythm.dtm <- dfm(disco.rhythm,
+#                        what = 'fastestword',
+#                        ngrams = 2:3
+#                        )
+
 ## drop rhythm-grams that span a rest
 disco.rhythm.dtm <- disco.rhythm.dtm[,!grepl('\\.', colnames(disco.rhythm.dtm))]
 ## identify 2/3-grams by counting number of token separators
@@ -129,11 +133,12 @@ pitchrel.dict <- dictionary(
   )
 )
 ## rebuild dtm with collapsed pitch-grams
-disco.pitchrel.dtm <- dfm(disco.pitch,
-                           what = 'word',
-                           ngrams = 2:3,
-                           dictionary = pitchrel.dict
-                           )
+disco.pitchrel.dtm <- disco.pitch %>% tokens(what = "word") %>% tokens_ngrams(2:3) %>% dfm(dictionary = pitchrel.dict)
+# disco.pitchrel.dtm <- dfm(disco.pitch,
+#                            what = 'word',
+#                            ngrams = 2:3,
+#                            dictionary = pitchrel.dict
+#                            )
 rownames(disco.pitchrel.dtm) <-
   gsub('-pitches\\.txt', '', rownames(disco.pitchrel.dtm))
 pitchrel.ngrams.length <-
@@ -166,11 +171,12 @@ rhythmrel.dict <- dictionary(
   )
 )
 ## rebuild dtm with collapse rhythm-grams
-disco.rhythmrel.dtm <- dfm(disco.rhythm,
-                           what = 'fastestword',
-                           ngrams = 2:3,
-                           dictionary = rhythmrel.dict
-                           )
+disco.rhythmrel.dtm <- disco.rhythm %>% tokens(what = "fastestword") %>% tokens_ngrams(2:3) %>% dfm(dictionary = rhythmrel.dict)
+# disco.rhythmrel.dtm <- dfm(disco.rhythm,
+#                            what = 'fastestword',
+#                            ngrams = 2:3,
+#                            dictionary = rhythmrel.dict
+#                            )
 rownames(disco.rhythmrel.dtm) <-
   gsub('-rhythmes\\.txt', '', rownames(disco.rhythmrel.dtm))
 rhythmrel.ngrams.length <-
@@ -308,7 +314,7 @@ disco.ngram.region <- ldply(
     out$region <- region
     return(out)
 
-  })
+})
 
 
 
